@@ -9,7 +9,7 @@
     <h3>{{ $elmnt->subject }}</h3>
     <p>{{ $elmnt->email }}</p>
     <p><small>{{ $elmnt->created_at }}</small></p>
-    <a href="#"><button class="btn btn-success">More...</button></a>
+    <a href="{{ route('contact-message', $elmnt->id) }}"><button class="btn btn-success">More...</button></a>
 </div>
 @endforeach
 @endsection
