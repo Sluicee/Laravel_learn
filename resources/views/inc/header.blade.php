@@ -9,6 +9,7 @@
         <li><a href="{{ route('home') }}" class="nav-link px-2 link-secondary">Home</a></li>
         <li><a href="{{ route('about') }}" class="nav-link px-2 link-dark">About</a></li>
         <li><a href="{{ route('contact') }}" class="nav-link px-2 link-dark">Contact</a></li>
+        <li><a href="{{ route('contact-messages') }}" class="nav-link px-2 link-dark">Messages</a></li>
     </ul>
 
     <div class="col-md-3 text-end">

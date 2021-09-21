@@ -18,4 +18,13 @@ class ContactController extends Controller {
 
         return redirect()->route('home')->with('success', 'Message sent');
     }
+
+    public function allData() {
+        $contact = new Contact;
+        $data = [];
+
+        $data = $contact->all();
+
+        return view('messages', ['data' => $data ]);
+    }
 }
