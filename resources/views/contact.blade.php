@@ -4,6 +4,17 @@
 
 @section('content')
 <h1>Contact page</h1>
+
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <form action="{{ route('contact-form') }}" method="post">
     @csrf
 
@@ -14,7 +25,7 @@
 
     <div class="form-group mt-3">
         <label for="email">Email</label>
-        <input type="email" name="name" placeholder="Email" id="email" class="form-control">
+        <input type="text" name="name" placeholder="Email" id="email" class="form-control">
     </div>
 
     <div class="form-group mt-3">
@@ -24,7 +35,7 @@
 
     <div class="form-group mt-3">
         <label for="message">Message</label>
-        <textarea type="text" name="subject" placeholder="Message" id="subject" class="form-control"></textarea>
+        <textarea type="text" name="message" placeholder="Message" id="message" class="form-control"></textarea>
     </div>
 
     <button type="submit" class="btn btn-success mt-3">Submit</button>
