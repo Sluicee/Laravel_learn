@@ -12,8 +12,16 @@
         <li><a href="{{ route('contact-messages') }}" class="nav-link px-2 link-dark">Messages</a></li>
     </ul>
 
+    @if (Auth::check())
     <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-outline-primary me-2">Login</button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
+        <span>{{ Auth::user()->name }}</span>
+        <a href="{{ route('user.logout') }}" class="btn btn-outline-primary me-2">Logout</a>
     </div>
+    @else
+    <div class="col-md-3 text-end">
+        <a href="{{ route('user.login') }}" class="btn btn-outline-primary me-2">Login</a>
+        <a href="{{ route('user.registration') }}"  class="btn btn-primary">Registration</a>
+    </div>
+    @endif
+    
 </header>

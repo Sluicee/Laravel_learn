@@ -24,7 +24,9 @@
                 @yield('content')
             </div>
             <div class="col-4">
+                @if(!Request::is('login') and !Request::is('registration'))
                 @include('inc.aside')
+                @endif
             </div>
         </div>
     </div>
