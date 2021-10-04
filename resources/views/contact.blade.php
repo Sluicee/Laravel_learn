@@ -8,9 +8,11 @@
 <form action="{{ route('contact-form') }}" method="post">
     @csrf
 
+    <input name="user_id"id="user_id" style="display: none" value="{{ Auth::user()->id }}">
+
     <div class="form-group mt-3">
         <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Name" id="name" class="form-control">
+        <input type="text" name="name" placeholder="Name" id="name" class="form-control" value="{{ Auth::user()->name }}">
     </div>
 
     <div class="form-group mt-3">

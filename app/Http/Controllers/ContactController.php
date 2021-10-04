@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller {
     public function Submit(ContactRequest $req) {
         $contact = new Contact();
         $contact->name = $req->input('name');
+        $contact->user_id = $req->input('user_id');
         $contact->email = $req->input('email');
         $contact->subject = $req->input('subject');
         $contact->messages = $req->input('message');
@@ -26,6 +28,15 @@ class ContactController extends Controller {
         $data = $contact->all();
 
         return view('messages', ['data' => $data ]);
+    }
+
+    public function messagesByUser() {
+        $contact = new Contact;
+        $data = [];
+        $user_id = Auth::user()->id;
+        $data = $contact->where('user_id', '=', $user_id)->get();
+
+        return view('private', ['data' => $data ]);
     }
 
     public function showMessage($id) {

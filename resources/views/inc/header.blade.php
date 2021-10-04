@@ -15,6 +15,7 @@
     @if (Auth::check())
     <div class="col-md-3 text-end">
         <span>{{ Auth::user()->name }}</span>
+        <a href="{{ route('user.private') }}"  class="btn btn-primary">User page</a>
         <a href="{{ route('user.logout') }}" class="btn btn-outline-primary me-2">Logout</a>
     </div>
     @else
