@@ -22,6 +22,8 @@ class ContactController extends Controller {
     }
 
     public function allData() {
+        $this->authorize('edit-messages');
+        
         $contact = new Contact;
         $data = [];
 
@@ -71,6 +73,7 @@ class ContactController extends Controller {
     }
 
     public function deleteMessage($id) {
+        $this->authorize('edit-messages');
         $contact = Contact::find($id)->delete();
         return redirect()->route('contact-messages', $id)->with('success', 'Message deleted');
     }
