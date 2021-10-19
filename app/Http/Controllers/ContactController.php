@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use App\Models\ApplicationType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller {
     public function Submit(ContactRequest $req) {
@@ -15,21 +17,26 @@ class ContactController extends Controller {
         $contact->email = $req->input('email');
         $contact->subject = $req->input('subject');
         $contact->messages = $req->input('message');
+        $contact->app_type = $req->input('appType_select');
+        
 
         $contact->save();
 
         return redirect()->route('home')->with('success', 'Message sent');
     }
 
+    public function getContactForm() {
+        $data = ApplicationType::all();
+        return view('contact', ['data' => $data ]);
+    }
+
     public function allData() {
         $this->authorize('edit-messages');
         
         $contact = new Contact;
-        $data = [];
+        $appType = new ApplicationType;
 
-        $data = $contact->all();
-
-        return view('messages', ['data' => $data ]);
+        return view('messages', ['data' => $contact->all() ], ['app_data_type' => $appType->all() ]);
     }
 
     public function messagesByUser() {
@@ -42,15 +49,20 @@ class ContactController extends Controller {
     }
 
     public function showMessage($id) {
+
         $contact = new Contact;
+        
         $data = [];
 
         $data = $contact->find($id);
+        $this->authorize('can-view', $data);
 
         return view('message', ['data' => $data ]);
     }
 
     public function updateMessage($id) {
+        $this->authorize('edit-messages');
+
         $contact = new Contact;
         $data = [];
 
@@ -59,13 +71,10 @@ class ContactController extends Controller {
         return view('update_message', ['data' => $data ]);
     }
 
-    public function updateMessageSubmit($id, ContactRequest $req) {
+    public function updateMessageSubmit($id, Request $req) {
 
         $contact = Contact::find($id);
-        $contact->name = $req->input('name');
-        $contact->email = $req->input('email');
-        $contact->subject = $req->input('subject');
-        $contact->messages = $req->input('message');
+        $contact->status = $req->input('status_select');
 
         $contact->save();
 
