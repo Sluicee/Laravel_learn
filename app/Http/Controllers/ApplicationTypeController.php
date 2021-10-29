@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ApplicationType;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Log;
 
 class ApplicationTypeController extends Controller
@@ -22,7 +23,7 @@ class ApplicationTypeController extends Controller
 
     public function applicationTypeDelete(Request $req){
         $id = $req->input('appType_select');
-        Log::debug($id);
+        Contact::where('app_type','=',ApplicationType::find($id)->name)->delete();
         $ApplicationType = ApplicationType::find($id)->delete();
         return redirect()->route('contact-messages', $id)->with('success', 'Type deleted');
     }

@@ -7,9 +7,9 @@
     <?php echo csrf_field(); ?>
 
     <div class="form-group mt-3">
-        <label for="email">Email</label>
-        <input type="text" name="email" placeholder="Email" id="email" class="form-control">
-        <?php $__errorArgs = ['email'];
+        <label for="login">Login</label>
+        <input type="text" name="login" placeholder="Login" id="login" class="form-control">
+        <?php $__errorArgs = ['login'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

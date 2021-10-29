@@ -11,3 +11,28 @@ footer {
   width: 90%;
   margin-left: 5%;
 }
+
+.home_images {
+  position: relative;
+  height: 500px;
+}
+
+.home_image {
+  width: 100%;
+  position: absolute;
+  max-height: 500px;
+}
+
+.home_image_after {
+  z-index: 1;
+}
+
+.home_image_after:hover ~ .home_image_before {
+  transform: scale(1);
+}
+
+.home_image_before {
+  transform: scale(0);
+  transition: transform 1s;
+  z-index: 2;
+}
