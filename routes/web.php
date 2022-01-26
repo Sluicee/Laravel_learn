@@ -17,13 +17,14 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/', 'App\Http\Controllers\ContactController@getHomePage')->name('home');
+
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->middleware('auth')->name('contact');
+
+Route::get('/contact', 'App\Http\Controllers\ContactController@getContactForm')->middleware('auth')->name('contact');
 
 Route::name('user.')->group(function(){
     Route::get('/private', 'App\Http\Controllers\ContactController@messagesByUser')->middleware('auth')->name('private');
@@ -59,3 +60,6 @@ Route::get('/message/all/{id}', 'App\Http\Controllers\ContactController@showMess
 Route::get('/message/all', 'App\Http\Controllers\ContactController@allData')->middleware('auth')->name('contact-messages');
 
 Route::post('/message/submit', 'App\Http\Controllers\ContactController@submit')->middleware('auth')->name('contact-form');
+
+Route::post('/apptypeadd', 'App\Http\Controllers\ApplicationTypeController@applicationTypeAdd')->middleware('auth')->name('applicationType-add');
+Route::post('/apptypedelete', 'App\Http\Controllers\ApplicationTypeController@applicationTypeDelete')->middleware('auth')->name('applicationType-delete');
