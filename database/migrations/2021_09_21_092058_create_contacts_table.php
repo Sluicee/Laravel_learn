@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateContactsTable extends Migration
 {
@@ -20,6 +21,11 @@ class CreateContactsTable extends Migration
             $table->string('email');
             $table->string('subject');
             $table->text('messages');
+            $table->string('app_type');
+            $table->string('status')->default('sent');
+            $table->string('messageImageBefore')->nullable();
+            $table->string('messageImageAfter')->nullable();
+            $table->string('rejectReason')->nullable();
             $table->timestamps();
         });
     }

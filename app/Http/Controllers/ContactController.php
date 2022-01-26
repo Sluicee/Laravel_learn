@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use App\Models\ApplicationType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class ContactController extends Controller {
     public function Submit(ContactRequest $req) {
@@ -15,21 +19,29 @@ class ContactController extends Controller {
         $contact->email = $req->input('email');
         $contact->subject = $req->input('subject');
         $contact->messages = $req->input('message');
+        $contact->app_type = $req->input('appType_select');
+        if($req->file('beforeImage') != null) {
+            $contact->messageImageBefore = substr($req->file('beforeImage')->store('public/image') , 13);
+        }
+        //$contact->messageImageBefore =  Storage::putFile('', $req->file('beforeImage'));
 
         $contact->save();
 
         return redirect()->route('home')->with('success', 'Message sent');
     }
 
+    public function getContactForm() {
+        $data = ApplicationType::all();
+        return view('contact', ['data' => $data ]);
+    }
+
     public function allData() {
         $this->authorize('edit-messages');
         
         $contact = new Contact;
-        $data = [];
+        $appType = new ApplicationType;
 
-        $data = $contact->all();
-
-        return view('messages', ['data' => $data ]);
+        return view('messages', ['data' => $contact->all() ], ['app_data_type' => $appType->all() ]);
     }
 
     public function messagesByUser() {
@@ -42,15 +54,20 @@ class ContactController extends Controller {
     }
 
     public function showMessage($id) {
+
         $contact = new Contact;
+        
         $data = [];
 
         $data = $contact->find($id);
+        $this->authorize('can-view', $data);
 
         return view('message', ['data' => $data ]);
     }
 
     public function updateMessage($id) {
+        $this->authorize('edit-messages');
+
         $contact = new Contact;
         $data = [];
 
@@ -59,13 +76,21 @@ class ContactController extends Controller {
         return view('update_message', ['data' => $data ]);
     }
 
-    public function updateMessageSubmit($id, ContactRequest $req) {
+    public function updateMessageSubmit($id, Request $req) {
+
+        $validateFields = $req->validate([
+            'afterImage' => 'mimes:png,jpg,jpeg,bmp|max:10240'
+        ]);
 
         $contact = Contact::find($id);
-        $contact->name = $req->input('name');
-        $contact->email = $req->input('email');
-        $contact->subject = $req->input('subject');
-        $contact->messages = $req->input('message');
+        $contact->status = $req->input('status_select');
+        if ($contact->status === "reject") {
+            $contact->rejectReason = $req->input('rejectReason');
+        }
+
+        if ($req->file('afterImage') != null) {
+            $contact->messageImageAfter = substr($req->file('afterImage')->store('public/image'), 13);
+        }
 
         $contact->save();
 
@@ -73,8 +98,13 @@ class ContactController extends Controller {
     }
 
     public function deleteMessage($id) {
-        $this->authorize('edit-messages');
         $contact = Contact::find($id)->delete();
         return redirect()->route('contact-messages', $id)->with('success', 'Message deleted');
+    }
+
+    public function getHomePage() {
+        $data = Contact::orderBy('updated_at', 'DESC')->get()->where('status', '=', 'solved');
+
+        return view('home', ['data' => $data]);
     }
 }
