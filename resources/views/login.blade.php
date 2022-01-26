@@ -9,9 +9,9 @@
     @csrf
 
     <div class="form-group mt-3">
-        <label for="email">Email</label>
-        <input type="text" name="email" placeholder="Email" id="email" class="form-control">
-        @error('email')
+        <label for="login">Login</label>
+        <input type="text" name="login" placeholder="Login" id="login" class="form-control">
+        @error('login')
         <div class="alert alert-danger">{{ $message }}</div>
         @enderror
     </div>

@@ -6,10 +6,11 @@
     </a>
 
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="{{ route('home') }}" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="{{ route('about') }}" class="nav-link px-2 link-dark">About</a></li>
-        <li><a href="{{ route('contact') }}" class="nav-link px-2 link-dark">Contact</a></li>
-        <li><a href="{{ route('contact-messages') }}" class="nav-link px-2 link-dark">Messages</a></li>
+        <li><a href="{{ route('home') }}" class="nav-link px-2 link-dark">Home</a></li>
+        <li><a href="{{ route('contact') }}" class="nav-link px-2 link-dark">Contactus</a></li>
+        @can('edit-messages')
+        <li><a href="{{ route('contact-messages') }}" class="nav-link px-2 link-dark">Admin Panel</a></li>
+        @endcan
     </ul>
 
     @if (Auth::check())

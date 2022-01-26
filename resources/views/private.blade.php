@@ -7,7 +7,9 @@
 <p>Hello {{ Auth::user()->name }}. it's your messages page</p>
 
 @foreach($data as $elmnt)
-<div class="alert alert-info">
+<div class="alert alert-info mt-3">
+    <h3>Status: {{ $elmnt->status }}</h3>
+    <h3>Type: {{ $elmnt->app_type }}</h3>
     <h3>{{ $elmnt->subject }}</h3>
     <p>{{ $elmnt->email }}</p>
     <p><small>{{ $elmnt->created_at }}</small></p>

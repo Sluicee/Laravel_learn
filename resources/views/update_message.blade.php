@@ -5,28 +5,61 @@
 @section('content')
 <h1>Update page</h1>
 
-<form action="{{ route('contact-update-submit', $data->id) }}" method="post">
+<form enctype="multipart/form-data" action="{{ route('contact-update-submit', $data->id) }}" method="post">
     @csrf
+    @if ($data->status === "sent")
+    <select class="form-select" name="status_select">
+            <option value="sent">
+                new
+            </option>
+            <option value="solved">
+                solved
+            </option>
+            <option value="reject">
+                reject
+            </option>
+    </select>
+    @endif
 
-    <div class="form-group mt-3">
-        <label for="name">Name</label>
-        <input type="text" name="name" value="{{ $data->name }}" placeholder="Name" id="name" class="form-control">
+    <div class="form-group mt-3 afterImage" style="display: none">
+        <label for="afterImage">Image</label>
+        <input type="file" class="form-control-file" id="afterImage" name="afterImage">
     </div>
 
-    <div class="form-group mt-3">
-        <label for="email">Email</label>
-        <input type="text" name="email" value="{{ $data->email }}" placeholder="Email" id="email" class="form-control">
+    <div class="form-group mt-3 rejectReason" style="display: none">
+        <label for="rejectReason">Reject Reason</label>
+        <textarea type="text" name="rejectReason" placeholder="Reject Reason" id="rejectReason" class="form-control"></textarea>
     </div>
 
-    <div class="form-group mt-3">
-        <label for="subject">Subject</label>
-        <input type="text" name="subject" value="{{ $data->subject }}" placeholder="Subject" id="subject" class="form-control">
-    </div>
+    <script>
+        $(function() {
 
-    <div class="form-group mt-3">
-        <label for="message">Message</label>
-        <textarea type="text" name="message" placeholder="Message" id="message" class="form-control">{{ $data->messages }}</textarea>
-    </div>
+        var $select = $('.form-select'),
+            $input = $('.rejectReason');
+            $input2 = $('.afterImage');
+        $select.on('change', function() {
+        if($select.val() === 'reject') {
+            $input.show();
+            $input.attr("required", true);
+            $input2.hide();
+            $input2.attr("required", false);
+        } 
+        else if ($select.val() === 'solved') {
+            $input2.show();
+            $input2.attr("required", true);
+            $input.hide();
+            $input.attr("required", false);
+        }
+        else {
+            $input.hide();
+            $input.attr("required", false);
+            $input2.hide();
+            $input2.attr("required", false);
+        }
+        });
+
+        });
+    </script>
 
     <button type="submit" class="btn btn-success mt-3">Update</button>
 </form>

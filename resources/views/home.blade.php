@@ -4,8 +4,62 @@
 
 @section('content')
 <h1>Home page</h1>
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis, accusantium. Voluptas, optio sequi culpa quo laborum hic temporibus, omnis ipsum enim nulla unde non harum, illo iure vitae velit facere.</p>
+
+<div class="solved_counter">
+    @php
+    $solved = 0;
+    foreach ($data as $value) {
+        if ($value->status == "solved") {
+            $solved++;
+        };
+    };
+@endphp
+
+<h3 class="solved">Solved: {{ $solved }} </h3>
+</div>
+
+@php
+    $count = 0;
+@endphp
+
+@foreach ($data as $elmnt)
+
+@php
+    if ($count == 4) {
+        break;
+    }
+    $count++;
+@endphp
+
+<div class="alert alert-info">
+    <h3>{{ $elmnt->subject }}</h3>
+    <h3>Status: {{ $elmnt->status }}</h3>
+    <h3>Type: {{ $elmnt->app_type }}</h3>
+    <p><small>{{ $elmnt->created_at }}</small></p>
+    @if ( $elmnt->messageImageAfter != null )
+        <div class="home_images">
+            <img class="home_image home_image_after" src="{{asset("storage/image/$elmnt->messageImageAfter")}}" alt="">
+            <img class="home_image home_image_before" src="{{asset("storage/image/$elmnt->messageImageBefore")}}" alt="">
+        </div>
+
+    @endif
+</div>
+
+@endforeach
+
+<script>
+    var audio = new Audio('storage/image/PTQJUES-message-notification.mp3');
+    $(document).ready(function(){
+        setInterval(function(){
+            $(".solved_counter").load(location.href + " .solved");
+            console.log("refreshed");
+        }, 5000);
+    });
+</script>
+
 @endsection
 
 @section('aside')@parent<p>Home side text</p>
+
 @endsection
+
