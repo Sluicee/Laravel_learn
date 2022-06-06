@@ -13,16 +13,7 @@ class RegisterController extends Controller
             return redirect()->to(route('user.private'));
         }
 
-        $validateFields = $request->validate([
-            'name' => 'required',
-            'login' => 'required|min:5',
-            'email' => 'required|email',
-            'password' => 'required|min:5|max:50|confirmed',
-            'password_confirmation' => 'required',
-            'personal_data' => 'required'
-        ]);
-
-        if(User::where('login', $validateFields['login'])->exists()) {
+        if(User::where('login', $request->login)->exists()) {
             return redirect()->to(route('user.registration'))->withErrors([
                 'loginError' => 'User exists'
             ]);
