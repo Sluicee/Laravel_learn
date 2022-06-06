@@ -19,7 +19,7 @@ class RegisterController extends Controller
             ]);
         }
 
-        $user = User::create($validateFields);
+        $user = User::create($request);
         if($user){
             auth()->login($user);
             return redirect()->to(route('user.private'));
